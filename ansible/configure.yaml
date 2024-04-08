@@ -1,0 +1,21 @@
+- hosts: all
+  become: yes
+  tasks:
+  - name: Install Python and Flask
+    apt:
+      pkg:
+      - python3-pip
+      - python3
+      update_cache: yes
+
+  - name: Copy application files
+    copy:
+      src: ../application/
+      dest: /home/ubuntu/application/
+
+  - name: Install Python dependencies
+    pip:
+      requirements: /home/ubuntu/application/requirements.txt
+
+  - name: Start the application
+    shell: nohup python3 /home/ubuntu/application/app.py > log.txt 2>&1 &
